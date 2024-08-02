@@ -19,7 +19,7 @@ img = Image.open('Netflix_Logo.png')
 st.sidebar.image(img)
 
 # Sidebar for page selection
-page = st.sidebar.selectbox("Choose The Page", ["Genre Distribution", "Most Streamed"])
+page = st.sidebar.selectbox("Choose The Page", ["Genre Distribution", "Most Streamed", "Descriptive Statistics"])
 
 if page == "Genre Distribution":
     # List all unique genres
@@ -60,7 +60,7 @@ elif page == "Most Streamed":
     # Most Streamed visualization options
     statistic_option = st.sidebar.selectbox(
         "Choose The Statistics",
-        ["Top 10 Most Streamed", "Top 10 Most Popular", "Descriptive Statistics"]
+        ["Top 10 Most Streamed", "Top 10 Most Popular"]
     )
 
     if statistic_option == "Top 10 Most Streamed":
@@ -127,20 +127,20 @@ elif page == "Most Streamed":
         # Displaying the top 10 shows table
         st.table(top_10_popular[['title', 'genre', 'year', 'rating']].reset_index(drop=True))
 
-    elif statistic_option == "Descriptive Statistics":
-        st.subheader("Descriptive Statistics")
+elif page == "Descriptive Statistics":
+    st.subheader("Descriptive Statistics")
 
-        # Calculating descriptive statistics
-        descriptive_stats = df[['rating', 'votes']].describe().transpose()
+    # Calculating descriptive statistics
+    descriptive_stats = df[['rating', 'votes']].describe().transpose()
     
-        # Displaying descriptive statistics
-        st.write(descriptive_stats)
+    # Displaying descriptive statistics
+    st.write(descriptive_stats)
 
-        # Displaying histogram distribution of 'votes' and 'rating'
-        st.subheader("Distribution of Votes")
-        fig_votes = px.histogram(df, x='votes', nbins=30, title='Distribution of Votes')
-        st.plotly_chart(fig_votes, use_container_width=True)
+    # Displaying histogram distribution of 'votes' and 'rating'
+    st.subheader("Distribution of Votes")
+    fig_votes = px.histogram(df, x='votes', nbins=30, title='Distribution of Votes')
+    st.plotly_chart(fig_votes, use_container_width=True)
 
-        st.subheader("Distribution of Ratings")
-        fig_ratings = px.histogram(df, x='rating', nbins=30, title='Distribution of Ratings')
-        st.plotly_chart(fig_ratings, use_container_width=True)
+    st.subheader("Distribution of Ratings")
+    fig_ratings = px.histogram(df, x='rating', nbins=30, title='Distribution of Ratings')
+    st.plotly_chart(fig_ratings, use_container_width=True)

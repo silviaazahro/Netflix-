@@ -47,7 +47,7 @@ if page == "Genre Distribution":
         x='votes',
         y='title',
         color='votes',
-        color_continuous_scale=['#800000'],  # Changed to maroon color
+        color_continuous_scale='reds',  # Changed to red color scale
         title=f'Top 10 Shows in {selected_genre.capitalize()} Genre',
         labels={'votes': 'Votes', 'title': 'Show Title'},
         text='votes'
@@ -94,7 +94,7 @@ elif page == "Most Streamed":
             x='votes',
             y='title',
             color='votes',
-            color_continuous_scale=['#800000'],  # Changed to maroon color scale
+            color_continuous_scale='reds',  # Changed to red color scale
             title='Top 10 Most Streamed Netflix Shows',
             labels={'votes': 'Votes', 'title': 'Show Title'},
             text='votes'
@@ -134,7 +134,7 @@ elif page == "Most Streamed":
             x='rating',
             y='title',
             color='rating',
-            color_continuous_scale=['#800000'],  # Changed to maroon color scale
+            color_continuous_scale='reds',  # Changed to red color scale
             title='Top 10 Most Popular Netflix Shows',
             labels={'rating': 'Rating', 'title': 'Show Title'},
             text='rating'
@@ -160,9 +160,9 @@ elif page == "Descriptive Statistics":
 
     # Displaying histogram distribution of 'votes' and 'rating'
     st.subheader("Distribution of Votes")
-    fig_votes = px.histogram(df, x='votes', nbins=30, title='Distribution of Votes', color_discrete_sequence=['#ADD8E6'])  # Light Blue
+    fig_votes = px.histogram(df, x='votes', nbins=30, title='Distribution of Votes', color_discrete_sequence=['red'])
     st.plotly_chart(fig_votes, use_container_width=True)
 
     st.subheader("Distribution of Ratings")
-    fig_ratings = px.histogram(df, x='rating', nbins=30, title='Distribution of Ratings', color_discrete_sequence=['#ADD8E6'])  # Light Blue
+    fig_ratings = px.histogram(df, x='rating', nbins=30, title='Distribution of Ratings', color_discrete_sequence=['red'])
     st.plotly_chart(fig_ratings, use_container_width=True)

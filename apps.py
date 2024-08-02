@@ -12,7 +12,7 @@ df = pd.read_csv(url_data)
 df['genre'] = df['genre'].str.lower()
 
 # Dashboard title
-st.title("Netflix Streaming Dashboard 2024")
+st.title("Netflix Streaming Dashboard")
 
 # Netflix logo
 img = Image.open('Netflix_Logo.png')
@@ -36,7 +36,7 @@ if page == "Genre Distribution":
     filtered_df = filtered_df.drop_duplicates(subset='title')
     
     # Displaying genre distribution for the selected genre
-    st.subheader(f"Top 10 Shows in {selected_genre} Genre")
+    st.subheader(f"Top 10 Shows in {selected_genre.capitalize()} Genre")
 
     # Get the top 10 shows based on votes (or use rating if you prefer)
     top_10_shows = filtered_df.sort_values(by='votes', ascending=False).head(10)
@@ -48,7 +48,7 @@ if page == "Genre Distribution":
         y='title',
         color='votes',
         color_continuous_scale='blues',
-        title=f'Top 10 Shows in {selected_genre} Genre',
+        title=f'Top 10 Shows in {selected_genre.capitalize()} Genre',
         labels={'votes': 'Votes', 'title': 'Show Title'},
         text='votes'
     )
@@ -86,7 +86,7 @@ elif page == "Most Streamed":
         # Sort by 'votes' and get the top 10 shows
         top_10_streamed = df_no_duplicates.sort_values(by='votes', ascending=False).head(10)
 
-        st.subheader("Top 10 Most Streamed Netflix Shows 2024")
+        st.subheader("Top 10 Most Streamed Netflix Shows")
         
         # Visualization of the top 10 streamed shows
         fig = px.bar(
@@ -95,7 +95,7 @@ elif page == "Most Streamed":
             y='title',
             color='votes',
             color_continuous_scale='reds',
-            title='Top 10 Most Streamed Netflix Shows 2024',
+            title='Top 10 Most Streamed Netflix Shows',
             labels={'votes': 'Votes', 'title': 'Show Title'},
             text='votes'
         )
@@ -126,7 +126,7 @@ elif page == "Most Streamed":
         # Sort by 'rating' and get the top 10 shows
         top_10_popular = df_no_duplicates.sort_values(by='rating', ascending=False).head(10)
 
-        st.subheader("Top 10 Most Popular Netflix Shows 2024")
+        st.subheader("Top 10 Most Popular Netflix Shows")
     
         # Visualization of the top 10 popular shows
         fig = px.bar(
@@ -135,7 +135,7 @@ elif page == "Most Streamed":
             y='title',
             color='rating',
             color_continuous_scale='greens',
-            title='Top 10 Most Popular Netflix Shows 2024',
+            title='Top 10 Most Popular Netflix Shows',
             labels={'rating': 'Rating', 'title': 'Show Title'},
             text='rating'
         )

@@ -15,7 +15,7 @@ df['genre'] = df['genre'].str.lower()
 st.title("Netflix Streaming Dashboard")
 
 # Netflix logo
-img = Image.open('Netflix_Logo.png')
+img = Image.open('Netflix Logo.png')  # Updated filename here
 st.sidebar.image(img)
 
 # Sidebar for page selection

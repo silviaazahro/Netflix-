@@ -33,28 +33,41 @@ if page == "Genre Distribution":
     filtered_df = df[df['genre'].str.contains(selected_genre, case=False, na=False)]
     
     # Displaying genre distribution for the selected genre
-    st.subheader(f"Distribution of {selected_genre} Genre")
+    st.subheader(f"Top 10 Shows in {selected_genre} Genre")
 
-    # Count occurrences of the genre within the filtered data
-    genre_distribution = pd.DataFrame({
-        'Genre': [selected_genre],
-        'Count': [len(filtered_df)]
-    })
-    
-    # Visualization of genre distribution
+    # Get the top 10 shows based on votes (or use rating if you prefer)
+    top_10_shows = filtered_df.sort_values(by='votes', ascending=False).head(10)
+
+    # Visualization of top 10 shows
     fig = px.bar(
-        genre_distribution,
-        x='Genre',
-        y='Count',
-        title=f'Count of {selected_genre} Genre on Netflix',
-        color='Count',
-        color_continuous_scale=px.colors.sequential.Plasma
+        top_10_shows,
+        x='votes',
+        y='title',
+        color='votes',
+        color_continuous_scale='blues',
+        title=f'Top 10 Shows in {selected_genre} Genre',
+        labels={'votes': 'Votes', 'title': 'Show Title'},
+        text='votes'
     )
+    fig.update_layout(
+        yaxis_title='Show Title',
+        xaxis_title='Votes',
+        yaxis=dict(
+            tickmode='array',
+            tickvals=top_10_shows['title'],
+            ticktext=[t if len(t) <= 50 else t[:47] + '...' for t in top_10_shows['title']],
+            autorange='reversed'
+        ),
+        xaxis=dict(tickformat=',')
+    )
+    
+    # Adjusting y-axis to rotate labels
+    fig.update_yaxes(tickangle=-45)
     
     st.plotly_chart(fig, use_container_width=True)
     
-    # Displaying the genre counts table
-    st.table(filtered_df[['title', 'year', 'rating', 'votes']])
+    # Displaying the top 10 shows table
+    st.table(top_10_shows[['title', 'year', 'rating', 'votes']].reset_index(drop=True))
 
 elif page == "Most Streamed":
     # Most Streamed visualization options
@@ -64,7 +77,7 @@ elif page == "Most Streamed":
     )
 
     if statistic_option == "Top 10 Most Streamed":
-        # Sort by 'votes' (as a proxy for streaming count) and get the top 10 shows
+        # Sort by 'votes' and get the top 10 shows
         top_10_streamed = df.sort_values(by='votes', ascending=False).head(10)
 
         st.subheader("Top 10 Most Streamed Netflix Shows 2024")
@@ -86,61 +99,4 @@ elif page == "Most Streamed":
             yaxis=dict(
                 tickmode='array',
                 tickvals=top_10_streamed['title'],
-                ticktext=[t if len(t) <= 50 else t[:47] + '...' for t in top_10_streamed['title']],
-                autorange='reversed'
-            ),
-            xaxis=dict(tickformat=',')
-        )
-    
-        # Adjusting y-axis to rotate labels
-        fig.update_yaxes(tickangle=-45)
-    
-        st.plotly_chart(fig, use_container_width=True)
-        
-        # Displaying the top 10 shows table
-        st.table(top_10_streamed[['title', 'genre', 'year', 'votes']].reset_index(drop=True))
-
-    elif statistic_option == "Top 10 Most Popular":
-        # Sort by 'rating' and get the top 10 shows
-        top_10_popular = df.sort_values(by='rating', ascending=False).head(10)
-
-        st.subheader("Top 10 Most Popular Netflix Shows 2024")
-    
-        # Visualization of the top 10 popular shows
-        fig = px.bar(
-            top_10_popular,
-            x='rating',
-            y='title',
-            color='rating',
-            color_continuous_scale='greens',
-            title='Top 10 Most Popular Netflix Shows 2024',
-            labels={'rating': 'Rating', 'title': 'Show Title'},
-            text='rating'
-        )
-        fig.update_layout(
-            xaxis_title='Rating',
-            yaxis_title='Show Title',
-            yaxis=dict(autorange='reversed')  # Reversing the y-axis to maintain order
-        )
-        st.plotly_chart(fig, use_container_width=True)
-        
-        # Displaying the top 10 shows table
-        st.table(top_10_popular[['title', 'genre', 'year', 'rating']].reset_index(drop=True))
-
-elif page == "Descriptive Statistics":
-    st.subheader("Descriptive Statistics")
-
-    # Calculating descriptive statistics
-    descriptive_stats = df[['rating', 'votes']].describe().transpose()
-    
-    # Displaying descriptive statistics
-    st.write(descriptive_stats)
-
-    # Displaying histogram distribution of 'votes' and 'rating'
-    st.subheader("Distribution of Votes")
-    fig_votes = px.histogram(df, x='votes', nbins=30, title='Distribution of Votes')
-    st.plotly_chart(fig_votes, use_container_width=True)
-
-    st.subheader("Distribution of Ratings")
-    fig_ratings = px.histogram(df, x='rating', nbins=30, title='Distribution of Ratings')
-    st.plotly_chart(fig_ratings, use_container_width=True)
+                ticktext=[t if len(t) <= 50 else t[:47] + '...' for t in top_10_str

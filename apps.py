@@ -19,7 +19,7 @@ img = Image.open('Netflix Logo.png')  # Updated filename here
 st.sidebar.image(img)
 
 # Sidebar for page selection
-page = st.sidebar.selectbox("Choose The Page", ["Genre Distribution", "Most Streamed", "Descriptive Statistics"])
+page = st.sidebar.selectbox("Choose The Page", ["Genre Distribution", "Most Streamed"])
 
 if page == "Genre Distribution":
     # List all unique genres
@@ -38,7 +38,7 @@ if page == "Genre Distribution":
     # Displaying genre distribution for the selected genre
     st.subheader(f"Top 10 Shows in {selected_genre.capitalize()} Genre")
 
-    # Get the top 10 shows based on votes (or use rating if you prefer)
+    # Get the top 10 shows based on votes
     top_10_shows = filtered_df.sort_values(by='votes', ascending=False).head(10)
 
     # Visualization of top 10 shows
@@ -148,8 +148,8 @@ elif page == "Most Streamed":
         
         # Displaying the top 10 shows table
         st.table(top_10_popular[['title', 'genre', 'year', 'rating']].reset_index(drop=True))
-
-elif page == "Descriptive Statistics":
+    
+    # Descriptive Statistics Section
     st.subheader("Descriptive Statistics")
 
     # Calculating descriptive statistics
@@ -160,9 +160,9 @@ elif page == "Descriptive Statistics":
 
     # Displaying histogram distribution of 'votes' and 'rating'
     st.subheader("Distribution of Votes")
-    fig_votes = px.histogram(df, x='votes', nbins=30, title='Distribution of Votes', color_discrete_sequence=['red'])
+    fig_votes = px.histogram(df, x='votes', nbins=30, title='Distribution of Votes', color_discrete_sequence=['#800000'])  # Maroon
     st.plotly_chart(fig_votes, use_container_width=True)
 
     st.subheader("Distribution of Ratings")
-    fig_ratings = px.histogram(df, x='rating', nbins=30, title='Distribution of Ratings', color_discrete_sequence=['red'])
+    fig_ratings = px.histogram(df, x='rating', nbins=30, title='Distribution of Ratings', color_discrete_sequence=['#800000'])  # Maroon
     st.plotly_chart(fig_ratings, use_container_width=True)

@@ -31,6 +31,9 @@ if page == "Genre Distribution":
     
     # Filter the DataFrame based on the selected genre
     filtered_df = df[df['genre'].str.contains(selected_genre, case=False, na=False)]
+
+    # Remove duplicate titles
+    filtered_df = filtered_df.drop_duplicates(subset='title')
     
     # Displaying genre distribution for the selected genre
     st.subheader(f"Top 10 Shows in {selected_genre} Genre")
@@ -77,8 +80,11 @@ elif page == "Most Streamed":
     )
 
     if statistic_option == "Top 10 Most Streamed":
+        # Remove duplicate titles
+        df_no_duplicates = df.drop_duplicates(subset='title')
+        
         # Sort by 'votes' and get the top 10 shows
-        top_10_streamed = df.sort_values(by='votes', ascending=False).head(10)
+        top_10_streamed = df_no_duplicates.sort_values(by='votes', ascending=False).head(10)
 
         st.subheader("Top 10 Most Streamed Netflix Shows 2024")
         
@@ -114,8 +120,11 @@ elif page == "Most Streamed":
         st.table(top_10_streamed[['title', 'genre', 'year', 'votes']].reset_index(drop=True))
 
     elif statistic_option == "Top 10 Most Popular":
+        # Remove duplicate titles
+        df_no_duplicates = df.drop_duplicates(subset='title')
+        
         # Sort by 'rating' and get the top 10 shows
-        top_10_popular = df.sort_values(by='rating', ascending=False).head(10)
+        top_10_popular = df_no_duplicates.sort_values(by='rating', ascending=False).head(10)
 
         st.subheader("Top 10 Most Popular Netflix Shows 2024")
     

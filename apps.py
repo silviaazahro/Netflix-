@@ -99,4 +99,61 @@ elif page == "Most Streamed":
             yaxis=dict(
                 tickmode='array',
                 tickvals=top_10_streamed['title'],
-                ticktext=[t if len(t) <= 50 else t[:47] + '...' for t in top_10_str
+                ticktext=[t if len(t) <= 50 else t[:47] + '...' for t in top_10_streamed['title']],
+                autorange='reversed'
+            ),
+            xaxis=dict(tickformat=',')
+        )
+    
+        # Adjusting y-axis to rotate labels
+        fig.update_yaxes(tickangle=-45)
+    
+        st.plotly_chart(fig, use_container_width=True)
+        
+        # Displaying the top 10 shows table
+        st.table(top_10_streamed[['title', 'genre', 'year', 'votes']].reset_index(drop=True))
+
+    elif statistic_option == "Top 10 Most Popular":
+        # Sort by 'rating' and get the top 10 shows
+        top_10_popular = df.sort_values(by='rating', ascending=False).head(10)
+
+        st.subheader("Top 10 Most Popular Netflix Shows 2024")
+    
+        # Visualization of the top 10 popular shows
+        fig = px.bar(
+            top_10_popular,
+            x='rating',
+            y='title',
+            color='rating',
+            color_continuous_scale='greens',
+            title='Top 10 Most Popular Netflix Shows 2024',
+            labels={'rating': 'Rating', 'title': 'Show Title'},
+            text='rating'
+        )
+        fig.update_layout(
+            xaxis_title='Rating',
+            yaxis_title='Show Title',
+            yaxis=dict(autorange='reversed')  # Reversing the y-axis to maintain order
+        )
+        st.plotly_chart(fig, use_container_width=True)
+        
+        # Displaying the top 10 shows table
+        st.table(top_10_popular[['title', 'genre', 'year', 'rating']].reset_index(drop=True))
+
+elif page == "Descriptive Statistics":
+    st.subheader("Descriptive Statistics")
+
+    # Calculating descriptive statistics
+    descriptive_stats = df[['rating', 'votes']].describe().transpose()
+    
+    # Displaying descriptive statistics
+    st.write(descriptive_stats)
+
+    # Displaying histogram distribution of 'votes' and 'rating'
+    st.subheader("Distribution of Votes")
+    fig_votes = px.histogram(df, x='votes', nbins=30, title='Distribution of Votes')
+    st.plotly_chart(fig_votes, use_container_width=True)
+
+    st.subheader("Distribution of Ratings")
+    fig_ratings = px.histogram(df, x='rating', nbins=30, title='Distribution of Ratings')
+    st.plotly_chart(fig_ratings, use_container_width=True)

@@ -19,7 +19,7 @@ img = Image.open('Netflix Logo.png')  # Updated filename here
 st.sidebar.image(img)
 
 # Sidebar for page selection
-page = st.sidebar.selectbox("Choose The Page", ["Genre Distribution", "The Most Top Show of Netflix"])
+page = st.sidebar.selectbox("Choose The Page", ["Genre Distribution", "The Most Top Show of Netflix", "Descriptive Statistics"])
 
 if page == "Genre Distribution":
     # List all unique genres

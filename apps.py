@@ -149,7 +149,7 @@ elif page == "The Most Top Show of Netflix":
         # Displaying the top 10 shows table
         st.table(top_10_popular[['title', 'genre', 'year', 'rating']].reset_index(drop=True))
 
-    # Descriptive Statistics Section
+elif page == "Descriptive Statistics":
     st.subheader("Descriptive Statistics")
 
     # Calculating descriptive statistics

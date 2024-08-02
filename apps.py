@@ -8,12 +8,8 @@ import plotly.express as px
 url_data = 'https://github.com/silviaazahro/Netflix-/raw/main/cleaned_data.csv'
 df = pd.read_csv(url_data)
 
-# Check for expected columns in the dataset
-expected_columns = ['title', 'year', 'genre', 'rating', 'votes']
-for col in expected_columns:
-    if col not in df.columns:
-        st.error(f"Column '{col}' not found in the dataset. Please check the dataset or update the code.")
-        st.stop()
+# Ensure all genre values are in lowercase
+df['genre'] = df['genre'].str.lower()
 
 # Dashboard title
 st.title("Netflix Streaming Dashboard 2024")
@@ -26,25 +22,25 @@ st.sidebar.image(img)
 page = st.sidebar.selectbox("Choose The Page", ["Genre Distribution", "Most Streamed"])
 
 if page == "Genre Distribution":
-    # Filter by genre
-    selected_genre = st.sidebar.selectbox("Select Genre", df['genre'].unique())
+    # List all unique genres
+    all_genres = df['genre'].str.split(',').explode().str.strip().unique()
+    all_genres = sorted(set(all_genres))  # Sort and remove duplicates
     
-    # Filtering the DataFrame based on the selected genre
-    filtered_df = df[df['genre'] == selected_genre]
+    # Dropdown for selecting a genre
+    selected_genre = st.sidebar.selectbox("Select Genre", all_genres)
+    
+    # Filter the DataFrame based on the selected genre
+    filtered_df = df[df['genre'].str.contains(selected_genre, case=False, na=False)]
     
     # Displaying genre distribution for the selected genre
     st.subheader(f"Distribution of {selected_genre} Genre")
-    
-    # Count occurrences of each genre within the filtered data
-    genre_counts = filtered_df['genre'].value_counts().reset_index()
-    genre_counts.columns = ['Genre', 'Count']
-    
-    # Since we are filtering by a single genre, we only need to display the count
+
+    # Count occurrences of the genre within the filtered data
     genre_distribution = pd.DataFrame({
         'Genre': [selected_genre],
         'Count': [len(filtered_df)]
     })
-
+    
     # Visualization of genre distribution
     fig = px.bar(
         genre_distribution,
@@ -58,7 +54,7 @@ if page == "Genre Distribution":
     st.plotly_chart(fig, use_container_width=True)
     
     # Displaying the genre counts table
-    st.table(genre_distribution)
+    st.table(filtered_df[['title', 'year', 'rating', 'votes']])
 
 elif page == "Most Streamed":
     # Most Streamed visualization options

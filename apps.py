@@ -160,9 +160,9 @@ elif page == "Descriptive Statistics":
 
     # Displaying histogram distribution of 'votes' and 'rating'
     st.subheader("Distribution of Votes")
-    fig_votes = px.histogram(df, x='votes', nbins=30, title='Distribution of Votes', color_discrete_sequence=['#ADD8E6'])  # Light Blue
+    fig_votes = px.histogram(df, x='votes', nbins=30, title='Distribution of Votes', color_discrete_sequence=['red'])
     st.plotly_chart(fig_votes, use_container_width=True)
 
     st.subheader("Distribution of Ratings")
-    fig_ratings = px.histogram(df, x='rating', nbins=30, title='Distribution of Ratings', color_discrete_sequence=['#ADD8E6'])  # Light Blue
+    fig_ratings = px.histogram(df, x='rating', nbins=30, title='Distribution of Ratings', color_discrete_sequence=['red'])
     st.plotly_chart(fig_ratings, use_container_width=True)

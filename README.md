@@ -1,3 +1,5 @@
+# Netflix-Streamlit-Dashboard
+
 How to use this dashboard
 
 1. Create a virtual environment

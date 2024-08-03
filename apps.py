@@ -5,7 +5,7 @@ from PIL import Image
 import plotly.express as px
 
 # Reading the CSV file
-url_data = 'https://github.com/silviaazahro/Netflix-/raw/main/cleaned_data.csv'
+url_data = 'https://github.com/silviaazahro/Netflix-Dashboard/raw/main/cleaned_data.csv'
 df = pd.read_csv(url_data)
 
 # Ensure all genre values are in lowercase

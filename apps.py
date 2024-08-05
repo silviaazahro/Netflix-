@@ -1,12 +1,24 @@
-# Importing the required modules
 import streamlit as st
 import pandas as pd
 from PIL import Image
 import plotly.express as px
+import urllib.request
+from urllib.error import HTTPError, URLError
 
 # Reading the CSV file
 url_data = 'https://github.com/silviaazahro/Netflix-Dashboard/raw/main/cleaned_data.csv'
-df = pd.read_csv(url_data)
+
+try:
+    df = pd.read_csv(url_data)
+except HTTPError as e:
+    st.error(f'HTTP Error: {e.code} - {e.reason}')
+    st.stop()
+except URLError as e:
+    st.error(f'URL Error: {e.reason}')
+    st.stop()
+except Exception as e:
+    st.error(f'An unexpected error occurred: {e}')
+    st.stop()
 
 # Ensure all genre values are in lowercase
 df['genre'] = df['genre'].str.lower()
@@ -15,9 +27,12 @@ df['genre'] = df['genre'].str.lower()
 st.title("Netflix Streaming Dashboard")
 
 # Netflix logo
-img = Image.open('Netflix Logo.png')  # Updated filename here
-st.sidebar.image(img)
-
+try:
+    img = Image.open('Netflix Logo.png')
+    st.sidebar.image(img)
+except FileNotFoundError:
+    st.sidebar.warning("Netflix Logo.png not found. Please ensure the file is in the directory.")
+    
 # Sidebar for page selection
 page = st.sidebar.selectbox("Choose The Page", ["Genre Distribution", "The Most Top Show of Netflix", "Descriptive Statistics"])
 
@@ -47,7 +62,7 @@ if page == "Genre Distribution":
         x='votes',
         y='title',
         color='votes',
-        color_continuous_scale='reds',  # Changed to red color scale
+        color_continuous_scale='reds',
         title=f'Top 10 Shows in {selected_genre.capitalize()} Genre',
         labels={'votes': 'Votes', 'title': 'Show Title'},
         text='votes'
@@ -94,7 +109,7 @@ elif page == "The Most Top Show of Netflix":
             x='votes',
             y='title',
             color='votes',
-            color_continuous_scale='reds',  # Changed to red color scale
+            color_continuous_scale='reds',
             title='Top 10 Most Streamed Netflix Shows',
             labels={'votes': 'Votes', 'title': 'Show Title'},
             text='votes'
@@ -134,7 +149,7 @@ elif page == "The Most Top Show of Netflix":
             x='rating',
             y='title',
             color='rating',
-            color_continuous_scale='reds',  # Changed to red color scale
+            color_continuous_scale='reds',
             title='Top 10 Most Popular Netflix Shows',
             labels={'rating': 'Rating', 'title': 'Show Title'},
             text='rating'
